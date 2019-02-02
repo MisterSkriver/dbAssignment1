@@ -38,11 +38,11 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Map saved into a binary file.\n");
-                    main.saveMap();
+                    main.saveMapIntoFile();
                     break;
                 case 4:
                     System.out.println("Map loaded from a binary file.\n");
-                    main.loadMap();
+                    main.loadMapFromFile();
                     break;
                 case 5:
                     main.isRunning = false;
@@ -54,37 +54,37 @@ public class Main {
         }
     }
 
-    private void populateMap(int amount){
+    private void populateMap(int amountOfEntities){
 
-        for (int i = 0; i < amount ; i++) {
-            hMap.put(""+i, "the text()" );
+        for (int i = 0; i < amountOfEntities ; i++) {
+            hMap.put(""+i, "The data." );
         }
     }
 
-    private void loadMap(){
+    private void loadMapFromFile(){
 
-        Properties properties = new Properties();
+        Properties pr = new Properties();
         try {
-            properties.load(new FileInputStream("savedMap.bin"));
+            pr.load(new FileInputStream("savedMap.bin"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        for (String key : properties.stringPropertyNames()) {
-            hMap.put(key, properties.get(key).toString());
+        for (String key : pr.stringPropertyNames()) {
+            hMap.put(key, pr.get(key).toString());
         }
     }
 
-    private void saveMap(){
+    private void saveMapIntoFile(){
 
-        Properties properties = new Properties();
+        Properties pr = new Properties();
 
         for (Map.Entry<String,String> entry : hMap.entrySet()) {
-            properties.put(entry.getKey(), entry.getValue());
+            pr.put(entry.getKey(), entry.getValue());
         }
 
         try {
-            properties.store(new FileOutputStream("savedMap.bin"), null);
+            pr.store(new FileOutputStream("savedMap.bin"), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
