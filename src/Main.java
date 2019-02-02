@@ -1,5 +1,4 @@
 
-import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,11 +6,10 @@ import java.util.*;
 
 public class Main {
 
-    private HashMap<String, String> hMap = new HashMap<String, String>();
+    private HashMap<String, String> hMap = new HashMap<>();
     private boolean isRunning = true;
     private Scanner sc = new Scanner(System.in);
     private int choice = 0;
-
 
     public static void main(String[] args) {
 
@@ -19,7 +17,12 @@ public class Main {
 
         while(main.isRunning){
 
-            System.out.println("What is my purpose?\n1: Populate the map\n 2: Print map\n 3: Save the map\n 4: Load the map");
+            System.out.println("What is my purpose?");
+            System.out.println("1: Populate the map.");
+            System.out.println("2: Print current map.");
+            System.out.println("3: Save the map into a binary file.");
+            System.out.println("4: Load the map from the binary file.");
+            System.out.println("5: Exit the program.");
 
             main.choice = main.sc.nextInt();
 
@@ -27,45 +30,42 @@ public class Main {
                 case 1:
                     System.out.println("How many entries should the map have?");
                     main.populateMap(main.sc.nextInt());
-                    System.out.println("Map has been populated");
+                    System.out.println("Map has been populated\n");
                     break;
                 case 2:
-                    System.out.println("Currently loaded map:\n"+Arrays.asList(main.hMap));
+                    System.out.println("Currently loaded map:");
+                    System.out.println(Arrays.asList(main.hMap) + "\n");
                     break;
                 case 3:
+                    System.out.println("Map saved into a binary file.\n");
                     main.saveMap();
                     break;
                 case 4:
+                    System.out.println("Map loaded from a binary file.\n");
                     main.loadMap();
                     break;
+                case 5:
+                    main.isRunning = false;
+                    break;
                 default:
-                    System.out.println("Error, input has to be between 1 and 3.");
+                    System.out.println("Error, input has to be between 1 and 5.");
                     break;
             }
-
-
         }
-
-
-
-
     }
 
-
-    public void populateMap(int amount){
+    private void populateMap(int amount){
 
         for (int i = 0; i < amount ; i++) {
             hMap.put(""+i, "the text()" );
         }
-
     }
 
-
-    public void loadMap(){
+    private void loadMap(){
 
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("data.bin"));
+            properties.load(new FileInputStream("savedMap.bin"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,11 +73,9 @@ public class Main {
         for (String key : properties.stringPropertyNames()) {
             hMap.put(key, properties.get(key).toString());
         }
-
     }
 
-
-    public void saveMap(){
+    private void saveMap(){
 
         Properties properties = new Properties();
 
@@ -86,14 +84,9 @@ public class Main {
         }
 
         try {
-            properties.store(new FileOutputStream("data.bin"), null);
+            properties.store(new FileOutputStream("savedMap.bin"), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-
-
-
 }
